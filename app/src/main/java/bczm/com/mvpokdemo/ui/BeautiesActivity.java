@@ -1,4 +1,4 @@
-package bczm.com.mvpokdemo;
+package bczm.com.mvpokdemo.ui;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import java.util.List;
 
+import bczm.com.mvpokdemo.R;
 import bczm.com.mvpokdemo.adapter.BeautiesAdapter;
 import bczm.com.mvpokdemo.base.BaseActivity;
 import bczm.com.mvpokdemo.model.Beauties;
@@ -23,25 +24,10 @@ public class BeautiesActivity extends BaseActivity<IBeautiesView,BeautiesPresent
     private Button btnMoreData;
     private BeautiesAdapter adapter;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_beauties);
-        //recyclerView
-        recyclerView = findViewById(R.id.recyclerView);
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(manager);
-        recyclerView.setFocusableInTouchMode(false);
-        //load more
-        btnMoreData = findViewById(R.id.btnMoreData);
-
-        /**
-         * 2.执行UI逻辑
-         */
-        presenter.fetch();
-
-        //load more click event
-        btnMoreData.setOnClickListener((view)-> presenter.loadMore());
+    protected int getLayoutId() {
+        return R.layout.activity_beauties;
     }
 
     @Override
@@ -55,6 +41,32 @@ public class BeautiesActivity extends BaseActivity<IBeautiesView,BeautiesPresent
     }
 
     @Override
+    protected void findViews() {
+        //recyclerView
+        recyclerView = findViewById(R.id.recyclerView);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setFocusableInTouchMode(false);
+        //load more
+        btnMoreData = findViewById(R.id.btnMoreData);
+    }
+
+    @Override
+    protected void initData() {
+        /**
+         * 2.执行UI逻辑
+         */
+        presenter.fetch();
+
+    }
+
+    @Override
+    protected void setListener() {
+        //load more click event
+        btnMoreData.setOnClickListener((view)-> presenter.loadMore());
+    }
+
+    @Override
     public void showBeauties(Beauties beauties) {
         if(adapter==null){
             adapter = new BeautiesAdapter(R.layout.item,beauties.getResults(),this);
@@ -62,7 +74,5 @@ public class BeautiesActivity extends BaseActivity<IBeautiesView,BeautiesPresent
         }else {
             adapter.addData(beauties.getResults());
         }
-
-
     }
 }

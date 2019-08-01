@@ -1,0 +1,4 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/main_index_mine_sel" android:state_selected="true" />
+    <item android:drawable="@drawable/main_index_mine_def" android:state_selected="false"/>
+</selector>
